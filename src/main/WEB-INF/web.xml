@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+
+  <servlet>
+    <servlet-name>servlet.GetUserProfileServlet</servlet-name>
+    <servlet-class>servlet.GetUserProfileServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>servlet.GetUserProfileServlet</servlet-name>
+    <url-pattern>/getUserProfile</url-pattern>
+  </servlet-mapping>
+
+    <servlet>
+        <servlet-name>servlet.GetWaitersServlet</servlet-name>
+        <servlet-class>servlet.GetWaitersServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>servlet.GetWaitersServlet</servlet-name>
+        <url-pattern>/getWaiters</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>servlet.VoteServlet</servlet-name>
+        <servlet-class>servlet.VoteServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>servlet.VoteServlet</servlet-name>
+        <url-pattern>/vote</url-pattern>
+    </servlet-mapping>
+</web-app>
