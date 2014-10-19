@@ -6,6 +6,7 @@ import javax.persistence.*;
  * Created by Администратор on 18.10.2014.
  */
 @Entity
+@Table(name = "waiters")
 public class Waiter {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -14,6 +15,35 @@ public class Waiter {
     private String name;
     @Column
     private Double balance;
+    @Column
+    private Integer rating;
+    @Column
+    private String organization;
+
+    public Waiter() {
+    }
+
+    public Waiter(String name, String organization, Integer rating) {
+        this.name = name;
+        this.organization = organization;
+        this.rating = rating;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    public String getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
+    }
 
     public Long getId() {
         return id;
