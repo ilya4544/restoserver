@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 import domain.Visit;
 import domain.Waiter;
 import org.hibernate.Session;
-import servlet.User;
+import domain.User;
 import util.HibernateUtil;
 
 import javax.servlet.RequestDispatcher;

@@ -44,7 +44,7 @@
 
 
     %>
-    <blockquote><tr><td>rating %></tr></td></blockquote>
+<tr><td>rating %></tr></td>
     <%
         }
 
@@ -54,4 +54,3 @@
 </form>
 </body>
 </html>
-.l
