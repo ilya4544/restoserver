@@ -24,17 +24,16 @@ public class VoteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            Long userId = Long.valueOf(req.getParameter("userId"));
-            Long waiterId = Long.valueOf(req.getParameter("waiterId"));
-            Integer rating = Integer.parseInt(req.getParameter("rating"));
-            Visit visit = new Visit(userId, waiterId, rating, new Date());
+            Long userId = Long.valueOf((String)req.getParameter("userId"));
+            Long waiterId = Long.valueOf((String)req.getParameter("waiterId"));
+            Integer rating = Integer.parseInt((String)req.getParameter("rating"));
+            String comment = req.getParameter("review");
+            Visit visit = new Visit(userId, waiterId, rating, comment, new Date());
 
             Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
             session.beginTransaction();
             session.save(visit);
             session.getTransaction().commit();
-            System.out.println(visit.getId());
-            HibernateUtil.getSessionAnnotationFactory().close();
 
             resp.setContentType("application/json");
             Gson gson = new GsonBuilder().create();
@@ -45,7 +44,7 @@ public class VoteServlet extends HttpServlet {
             resp.setContentType("application/json");
             Gson gson = new GsonBuilder().create();
             PrintWriter out = resp.getWriter();
-            out.append(gson.toJson(new State(false)));
+            e.printStackTrace(out);
             out.close();
         }
     }

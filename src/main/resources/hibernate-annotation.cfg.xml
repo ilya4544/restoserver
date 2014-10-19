@@ -10,7 +10,7 @@
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password"></property>
         <!-- Connection Pool Size -->
-        <property name="hibernate.connection.pool_size">1</property>
+        <property name="hibernate.connection.pool_size">10</property>
 
         <!-- org.hibernate.HibernateException: No CurrentSessionContext configured! -->
         <property name="hibernate.current_session_context_class">thread</property>
@@ -23,5 +23,6 @@
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <mapping class="domain.User"/>
         <mapping class="domain.Visit"/>
+        <mapping class="domain.Waiter"/>
     </session-factory>
 </hibernate-configuration>

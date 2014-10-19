@@ -22,16 +22,27 @@ public class Visit {
     private Long userId;
     @Column(name = "waiter_id")
     private Long waiterId;
+    @Column
+    private String comment;
 
     public Visit() {
     }
 
-    public Visit(Long userId, Long waiterId, Integer rating, Date date) {
+    public Visit(Long userId, Long waiterId, Integer rating, String comment, Date date) {
         this.rating = rating;
         this.date = date;
         this.userId = userId;
         this.waiterId = waiterId;
+        this.comment = comment;
         this.payment = 0.0;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Long getId() {
