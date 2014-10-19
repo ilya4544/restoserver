@@ -11,14 +11,14 @@ import java.util.Date;
 public class App {
 
     public static void main(String[] args) {
-        User user = new User("Jack", 1.0);
-        Visit visit = new Visit(1L, 1L, 2, new Date());
-        //Get Session
+//        User user = new User("Jack", 1.0);
+//        Visit visit = new Visit(1L, 1L, 2, new Date());
+//        //Get Session
         Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
         //start transaction
         session.beginTransaction();
         //Save the Model object
-        session.save(visit);
+        session.get(User.class, 1L);
         //Commit transaction
         session.getTransaction().commit();
        // System.out.println(user.getId());

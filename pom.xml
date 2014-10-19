@@ -40,7 +40,16 @@
             <artifactId>jta</artifactId>
             <version>1.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.2</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -51,7 +60,7 @@
                 <version>2.4</version>
                 <configuration>
                     <warName>restoserver</warName>
-                    <webXml>src/main/WEB-INF/web.xml</webXml>
+                    <webXml>src/main/webapp/WEB-INF/web.xml</webXml>
                 </configuration>
             </plugin>
         </plugins>

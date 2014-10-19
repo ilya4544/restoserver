@@ -21,7 +21,6 @@ public class GetUserProfileServlet extends HttpServlet {
         Long id = Long.valueOf(req.getParameter("id"));
         Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
         User user = (User) session.get(User.class, id);
-        HibernateUtil.getSessionAnnotationFactory().close();
 
         resp.setContentType("application/json");
         Gson gson = new GsonBuilder().create();
