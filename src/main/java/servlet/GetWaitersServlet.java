@@ -35,6 +35,7 @@ public class GetWaitersServlet extends HttpServlet {
         }
         out.append("]");
         session.getTransaction().commit();
+        resp.setCharacterEncoding("UTF-8");
         out.close();
     }
 

@@ -1,9 +1,9 @@
 package servlet;
 
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import domain.Token;
-import domain.Visit;
+import domain.User;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import util.HibernateUtil;
@@ -14,34 +14,25 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 import java.util.List;
 
-public class VoteServlet extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
-    }
+public class SignUpServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String login = req.getParameter("login");
+        String hash = req.getParameter("hash");
+        String name = req.getParameter("name");
         Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
         try {
-            String token = req.getParameter("token");
-            Long waiterId = Long.valueOf(req.getParameter("waiterId"));
-            Integer rating = Integer.parseInt(req.getParameter("rating"));
-            String comment = req.getParameter("review");
-
             session.beginTransaction();
-            List<Token> tokenList = session.createCriteria(Token.class).add(Expression.eq("token", token)).list();
-            if (tokenList.isEmpty())
-                throw new Exception("access denied");
-            Visit visit = new Visit(tokenList.get(0).getUserId(), waiterId, rating, comment, new Date());
-
-            session.save(visit);
-            session.getTransaction().commit();
-
+            List<User> userList = session.createCriteria(User.class).add(Expression.eq("login", login)).list();
+            if (userList.isEmpty()) {
+                session.save(new User(login, hash, name, 0.0));
+                session.getTransaction().commit();
+            } else {
+                throw new Exception("login already exists");
+            }
             resp.setContentType("application/json");
             Gson gson = new GsonBuilder().create();
             PrintWriter out = resp.getWriter();
@@ -54,9 +45,9 @@ public class VoteServlet extends HttpServlet {
             resp.setContentType("application/json");
             Gson gson = new GsonBuilder().create();
             PrintWriter out = resp.getWriter();
-            out.append(gson.toJson(new Error(e.getMessage())));
+            out.append(new String(gson.toJson(new Error(e.getMessage())).getBytes(),"UTF-8"));
+            resp.setCharacterEncoding("UTF-8");
             out.close();
         }
     }
 }
-

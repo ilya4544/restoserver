@@ -24,5 +24,6 @@
         <mapping class="domain.User"/>
         <mapping class="domain.Visit"/>
         <mapping class="domain.Waiter"/>
+        <mapping class="domain.Token"/>
     </session-factory>
 </hibernate-configuration>
