@@ -18,9 +18,6 @@ import java.io.PrintWriter;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Администратор on 18.10.2014.
- */
 public class GetUserProfileServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

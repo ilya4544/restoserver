@@ -2,9 +2,6 @@ package domain;
 
 import javax.persistence.*;
 
-/**
- * Created by Администратор on 18.10.2014.
- */
 @Entity
 @Table(name = "waiters")
 public class Waiter {
@@ -19,8 +16,18 @@ public class Waiter {
     private Integer rating;
     @Column
     private String organization;
+    @Column
+    private Integer countRating;
 
     public Waiter() {
+    }
+
+    public Integer getCountRating() {
+        return countRating;
+    }
+
+    public void setCountRating(Integer countRating) {
+        this.countRating = countRating;
     }
 
     public Waiter(String name, String organization, Integer rating) {

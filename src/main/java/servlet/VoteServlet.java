@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import domain.Token;
 import domain.Visit;
+import domain.Waiter;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import util.HibernateUtil;
@@ -38,8 +39,17 @@ public class VoteServlet extends HttpServlet {
             if (tokenList.isEmpty())
                 throw new Exception("access denied");
             Visit visit = new Visit(tokenList.get(0).getUserId(), waiterId, rating, comment, new Date());
-
             session.save(visit);
+            Waiter waiter = (Waiter) session.get(Waiter.class, waiterId);
+            if (waiter.getCountRating().equals(0)) {
+                waiter.setRating(rating);
+            }
+            else {
+                waiter.setRating((waiter.getRating()*waiter.getCountRating()+rating)/(waiter.getCountRating()+1));
+            }
+
+            waiter.setCountRating(waiter.getCountRating()+1);
+            session.update(waiter);
             session.getTransaction().commit();
 
             resp.setContentType("application/json");

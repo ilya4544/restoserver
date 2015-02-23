@@ -22,7 +22,8 @@
 
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.css">
-
+    <script src="//cdn.datatables.net/plug-ins/380cb78f450/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+    <link rel="stylesheet" href="//cdn.datatables.net/plug-ins/380cb78f450/integration/bootstrap/3/dataTables.bootstrap.css">
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.js"></script>
@@ -55,10 +56,10 @@
     <div class="row">
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h2 class="sub-header">Section title</h2>
-            <div class="table-responsive">
-                <table class="table table-striped">
+            <div>
+                <table id="example" class="table table-striped table-bordered dataTable no-footer" role="grid">
                     <thead>
-                    <tr>
+                    <tr role="row">
                         <th>Waiters name</th>
                         <th>Average rate</th>
                     </tr>
@@ -90,24 +91,9 @@
 
 
     %>
-<tr>
+<tr role="row">
     <td>
-        <div class="accordion" id="accordion2">
-        <div class="accordion-group">
-            <div class="accordion-heading">
-                <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#<%=waiter.getId()%>">
-                    <%= waiter.getName() %>
-                </a>
-            </div>
-            <div id="<%=waiter.getId()%>" class="accordion-body collapse in">
-                <div class="accordion-inner">
-                    <% for (String comment : comments) { %>
-                    <%= comment%> <br>
-                    <% } %>
-                </div>
-            </div>
-        </div>
-        </div>
+        <%= waiter.getName() %>
     </td>
     <td>
         <%= Math.round(rating * 100.0) / 100.0 %>

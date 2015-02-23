@@ -2,6 +2,7 @@ package servlet;
 
 public class State {
     boolean success;
+    String message;
 
     public State(boolean success) {
         this.success = success;

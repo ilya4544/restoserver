@@ -28,12 +28,19 @@
         <servlet-name>index</servlet-name>
         <servlet-class>web.AjaxServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>servlet.QRCodeServlet</servlet-name>
+        <servlet-class>servlet.QRCodeServlet</servlet-class>
+    </servlet>
 
     <servlet-mapping>
         <servlet-name>servlet.GetUserProfileServlet</servlet-name>
         <url-pattern>/getUserProfile</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>servlet.QRCodeServlet</servlet-name>
+        <url-pattern>/getQRCode</url-pattern>
+    </servlet-mapping>
     <servlet-mapping>
         <servlet-name>servlet.GetWaitersServlet</servlet-name>
         <url-pattern>/getWaiters</url-pattern>
