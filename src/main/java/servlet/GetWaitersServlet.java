@@ -20,23 +20,29 @@ public class GetWaitersServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
-        session.beginTransaction();
-
-        List<Waiter> waiterList = (List<Waiter>) session.createCriteria(Waiter.class).list();
         resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
         Gson gson = new GsonBuilder().create();
         PrintWriter out = resp.getWriter();
-        out.append("[");
-        for (int i = 0; i < waiterList.size(); i++) {
-            out.append(gson.toJson(waiterList.get(i)));
-            if (i < waiterList.size() - 1)
-                out.append(",");
+
+        final Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        try {
+            session.beginTransaction();
+            List<Waiter> waiterList = (List<Waiter>) session.createCriteria(Waiter.class).list();
+            out.append("[");
+            for (int i = 0; i < waiterList.size(); i++) {
+                out.append(gson.toJson(waiterList.get(i)));
+                if (i < waiterList.size() - 1)
+                    out.append(",");
+            }
+            out.append("]");
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            out.append(gson.toJson(new Error(e.getMessage())));
+        } finally {
+            out.close();
         }
-        out.append("]");
-        session.getTransaction().commit();
-        resp.setCharacterEncoding("UTF-8");
-        out.close();
     }
 
     @Override

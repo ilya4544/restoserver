@@ -31,43 +31,44 @@ public class SignInServlet extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String hash = req.getParameter("hash");
-        Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        resp.setContentType("application/json");
+        Gson gson = new GsonBuilder().create();
+        PrintWriter out = resp.getWriter();
+
         try {
             session.beginTransaction();
             Criteria criteria =  session.createCriteria(User.class);
             criteria.add(Expression.eq("login", login));
             List<User> userList = criteria.list();
-            if (userList.size() == 0)
-                throw new Exception("login not exists");
-            User user = (User) session.get(User.class, userList.get(0).getId());
-            resp.setContentType("application/json");
-            Gson gson = new GsonBuilder().create();
-            PrintWriter out = resp.getWriter();
-            if (user.getHash().equals(hash)) {
-                String token = securityUtil.nextSessionId();
-                Date currentDate = new Date();
-                currentDate.setDate(currentDate.getDate() + 5);
-                List<Token> tokenList = session.createCriteria(Token.class).add(Expression.eq("userId",user.getId())).list();
-                if (tokenList.isEmpty()) {
-                    session.save(new Token(user.getId(), token, currentDate));
+            if (!userList.isEmpty()) {
+                User user = (User) session.get(User.class, userList.get(0).getId());
+                if (user.getHash().equals(hash)) {
+                    String token = securityUtil.nextSessionId();
+                    Date currentDate = new Date();
+                    currentDate.setDate(currentDate.getDate() + 5);
+                    List<Token> tokenList = session.createCriteria(Token.class).add(Expression.eq("userId", user.getId())).list();
+                    if (tokenList.isEmpty()) {
+                        session.save(new Token(user.getId(), token, currentDate));
+                    } else {
+                        tokenList.get(0).setToken(token);
+                        tokenList.get(0).setDate(currentDate);
+                        session.update(tokenList.get(0));
+                    }
+                    out.append(gson.toJson(new TokenKeeper(token)));
+                    session.getTransaction().commit();
                 } else {
-                    tokenList.get(0).setToken(token);
-                    tokenList.get(0).setDate(currentDate);
-                    session.update(tokenList.get(0));
+                    session.getTransaction().commit();
+                    out.append(gson.toJson(new Error("access denied")));
                 }
-                out.append(gson.toJson(new TokenKeeper(token)));
             } else {
-                throw new Exception("access denied");
+                session.getTransaction().commit();
+                out.append(gson.toJson(new Error("login not exists")));
             }
-            session.getTransaction().commit();
-            out.close();
         } catch (Exception e) {
-            if (session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            resp.setContentType("application/json");
-            Gson gson = new GsonBuilder().create();
-            PrintWriter out = resp.getWriter();
+            session.getTransaction().rollback();
             out.append(gson.toJson(new Error(e.getMessage())));
+        } finally {
             out.close();
         }
     }

@@ -4,6 +4,8 @@
 <%@ page import="util.HibernateUtil" %>
 <%@ page import="domain.Waiter" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.io.*,java.util.*"%>
+<%@ page import="javax.servlet.http.*,javax.servlet.*" %>
 <%--
   Created by IntelliJ IDEA.
   User: user
@@ -66,12 +68,18 @@
                     </thead>
                     <tbody>
     <%
-        Session hibsession = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
-        hibsession.beginTransaction();
-        List<Visit> visits = hibsession.createCriteria(Visit.class).list();
-        List<Waiter> waiters = hibsession.createCriteria(Waiter.class).list();
-        hibsession.getTransaction().commit();
-
+        Session mSession = HibernateUtil.getSessionFactory().getCurrentSession();
+        List<Visit> visits;
+        List<Waiter> waiters;
+        try {
+            mSession.beginTransaction();
+            visits = mSession.createCriteria(Visit.class).list();
+            waiters = mSession.createCriteria(Waiter.class).list();
+            mSession.getTransaction().commit();
+        } catch (Exception e) {
+            mSession.getTransaction().rollback();
+            throw e;
+        }
         for(Waiter waiter : waiters) {
             ArrayList<String> comments = new ArrayList<String>();
             double rating = 0;
@@ -94,6 +102,11 @@
 <tr role="row">
     <td>
         <%= waiter.getName() %>
+        <% for (String s : comments) {
+            out.println("");
+            out.println(s);
+        }%>
+
     </td>
     <td>
         <%= Math.round(rating * 100.0) / 100.0 %>

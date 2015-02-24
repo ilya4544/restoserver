@@ -27,7 +27,12 @@ public class VoteServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+        Gson gson = new GsonBuilder().create();
+        PrintWriter out = resp.getWriter();
+
+        final Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         try {
             String token = req.getParameter("token");
             Long waiterId = Long.valueOf(req.getParameter("waiterId"));
@@ -36,35 +41,28 @@ public class VoteServlet extends HttpServlet {
 
             session.beginTransaction();
             List<Token> tokenList = session.createCriteria(Token.class).add(Expression.eq("token", token)).list();
-            if (tokenList.isEmpty())
-                throw new Exception("access denied");
-            Visit visit = new Visit(tokenList.get(0).getUserId(), waiterId, rating, comment, new Date());
-            session.save(visit);
-            Waiter waiter = (Waiter) session.get(Waiter.class, waiterId);
-            if (waiter.getCountRating().equals(0)) {
-                waiter.setRating(rating);
-            }
-            else {
-                waiter.setRating((waiter.getRating()*waiter.getCountRating()+rating)/(waiter.getCountRating()+1));
-            }
+            if (!tokenList.isEmpty()) {
+                Visit visit = new Visit(tokenList.get(0).getUserId(), waiterId, rating, comment, new Date());
+                session.save(visit);
+                Waiter waiter = (Waiter) session.get(Waiter.class, waiterId);
+                if (waiter.getCountRating().equals(0)) {
+                    waiter.setRating(rating);
+                } else {
+                    waiter.setRating((waiter.getRating() * waiter.getCountRating() + rating) / (waiter.getCountRating() + 1));
+                }
 
-            waiter.setCountRating(waiter.getCountRating()+1);
-            session.update(waiter);
-            session.getTransaction().commit();
-
-            resp.setContentType("application/json");
-            Gson gson = new GsonBuilder().create();
-            PrintWriter out = resp.getWriter();
-            out.append(new String(gson.toJson(new State(true)).getBytes(),"UTF-8"));
-            resp.setCharacterEncoding("UTF-8");
-            out.close();
+                waiter.setCountRating(waiter.getCountRating() + 1);
+                session.update(waiter);
+                session.getTransaction().commit();
+                out.append(new String(gson.toJson(new State(true)).getBytes(), "UTF-8"));
+            } else {
+                session.getTransaction().commit();
+                out.append(gson.toJson(new Error("access denied")));
+            }
         } catch (Exception e) {
-            if (session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            resp.setContentType("application/json");
-            Gson gson = new GsonBuilder().create();
-            PrintWriter out = resp.getWriter();
+            session.getTransaction().rollback();
             out.append(gson.toJson(new Error(e.getMessage())));
+        } finally {
             out.close();
         }
     }

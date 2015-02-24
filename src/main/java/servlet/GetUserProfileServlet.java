@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transaction;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
@@ -21,37 +22,38 @@ import java.util.List;
 public class GetUserProfileServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
+        final Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         String token = req.getParameter("token");
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+        Gson gson = new GsonBuilder().create();
+        PrintWriter out = resp.getWriter();
+
         try {
             session.beginTransaction();
             List<Token> tokenList = session.createCriteria(Token.class).add(Expression.eq("token", token)).list();
-            if (tokenList.isEmpty())
-                throw new Exception("access denied");
-            Token tkn = (Token) session.get(Token.class, tokenList.get(0).getId());
-            Date currentDate = new Date();
-            if (tkn.getDate().before(currentDate))
-                throw new Exception("token is expired");
-            currentDate.setDate(currentDate.getDate() + 5);
-            tkn.setDate(currentDate);
-            session.update(tkn);
-            User user = (User) session.get(User.class, tkn.getUserId());
-            session.getTransaction().commit();
-
-            resp.setContentType("application/json");
-            Gson gson = new GsonBuilder().create();
-            PrintWriter out = resp.getWriter();
-            out.append(gson.toJson(user));
-            resp.setCharacterEncoding("UTF-8");
-            out.close();
+            if (!tokenList.isEmpty()) {
+                Token tkn = (Token) session.get(Token.class, tokenList.get(0).getId());
+                Date currentDate = new Date();
+                if (!tkn.getDate().before(currentDate)) {
+                    currentDate.setDate(currentDate.getDate() + 5);
+                    tkn.setDate(currentDate);
+                    session.update(tkn);
+                    User user = (User) session.get(User.class, tkn.getUserId());
+                    session.getTransaction().commit();
+                    out.append(gson.toJson(user));
+                } else {
+                    session.getTransaction().commit();
+                    out.append(gson.toJson(new Error("token is expired")));
+                }
+            } else {
+                session.getTransaction().commit();
+                out.append(gson.toJson(new Error("access denied")));
+            }
         } catch (Exception e) {
-            if (session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            resp.setContentType("application/json");
-            Gson gson = new GsonBuilder().create();
-            PrintWriter out = resp.getWriter();
+            session.getTransaction().rollback();
             out.append(gson.toJson(new Error(e.getMessage())));
-            resp.setCharacterEncoding("UTF-8");
+        } finally {
             out.close();
         }
     }

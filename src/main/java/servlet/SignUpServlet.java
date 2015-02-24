@@ -23,30 +23,28 @@ public class SignUpServlet extends HttpServlet {
         String login = req.getParameter("login");
         String hash = req.getParameter("hash");
         String name = req.getParameter("name");
-        Session session = HibernateUtil.getSessionAnnotationFactory().getCurrentSession();
+
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+        Gson gson = new GsonBuilder().create();
+        PrintWriter out = resp.getWriter();
+
+        final Session session = HibernateUtil.getSessionFactory().getCurrentSession();
         try {
             session.beginTransaction();
             List<User> userList = session.createCriteria(User.class).add(Expression.eq("login", login)).list();
             if (userList.isEmpty()) {
                 session.save(new User(login, hash, name, 0.0));
                 session.getTransaction().commit();
+                out.append(new String(gson.toJson(new State(true)).getBytes(),"UTF-8"));
             } else {
-                throw new Exception("login already exists");
+                session.getTransaction().commit();
+                out.append(gson.toJson(new Error("login already exists")));
             }
-            resp.setContentType("application/json");
-            Gson gson = new GsonBuilder().create();
-            PrintWriter out = resp.getWriter();
-            out.append(new String(gson.toJson(new State(true)).getBytes(),"UTF-8"));
-            resp.setCharacterEncoding("UTF-8");
-            out.close();
         } catch (Exception e) {
-            if (session.getTransaction().isActive())
-                session.getTransaction().rollback();
-            resp.setContentType("application/json");
-            Gson gson = new GsonBuilder().create();
-            PrintWriter out = resp.getWriter();
+            session.getTransaction().rollback();
             out.append(new String(gson.toJson(new Error(e.getMessage())).getBytes(),"UTF-8"));
-            resp.setCharacterEncoding("UTF-8");
+        } finally {
             out.close();
         }
     }

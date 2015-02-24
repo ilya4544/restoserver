@@ -1,11 +1,11 @@
-servlet\GetWaitersServlet.class
+RestoServer.class
 App.class
+servlet\GetUserProfileServlet.class
+domain\Waiter.class
 TestObject.class
+domain\Visit.class
 util\HibernateUtil.class
 servlet\VoteServlet.class
-domain\Visit.class
-domain\Waiter.class
-servlet\GetUserProfileServlet.class
-servlet\State.class
-RestoServer.class
 domain\User.class
+servlet\State.class
+servlet\GetWaitersServlet.class

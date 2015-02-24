@@ -63,8 +63,6 @@ public class QRCodeServlet extends HttpServlet {
                 }
             }
             BufferedImage logo = ImageIO.read( QRCodeServlet.class.getResourceAsStream("logos.png"));
-            //double scale = 0.1;
-            //logo = getScaledImage(logo,  (int)( logo.getWidth() * scale), (int)( logo.getHeight() * scale));
             graphics.drawImage( logo,
                     image.getWidth()/2 - logo.getWidth()/2,
                     image.getHeight()/2 - logo.getHeight()/2,
