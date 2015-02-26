@@ -29,7 +29,7 @@ public class SignUpServlet extends HttpServlet {
         Gson gson = new GsonBuilder().create();
         PrintWriter out = resp.getWriter();
 
-        final Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        final Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
             List<User> userList = session.createCriteria(User.class).add(Expression.eq("login", login)).list();
@@ -46,6 +46,7 @@ public class SignUpServlet extends HttpServlet {
             out.append(new String(gson.toJson(new Error(e.getMessage())).getBytes(),"UTF-8"));
         } finally {
             out.close();
+            session.close();
         }
     }
 }

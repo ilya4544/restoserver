@@ -68,7 +68,7 @@
                     </thead>
                     <tbody>
     <%
-        Session mSession = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session mSession = HibernateUtil.getSessionFactory().openSession();
         List<Visit> visits;
         List<Waiter> waiters;
         try {
@@ -79,6 +79,8 @@
         } catch (Exception e) {
             mSession.getTransaction().rollback();
             throw e;
+        } finally {
+            mSession.close();
         }
         for(Waiter waiter : waiters) {
             ArrayList<String> comments = new ArrayList<String>();

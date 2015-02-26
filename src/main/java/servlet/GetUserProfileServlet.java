@@ -22,7 +22,7 @@ import java.util.List;
 public class GetUserProfileServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        final Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        final Session session = HibernateUtil.getSessionFactory().openSession();
         String token = req.getParameter("token");
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
@@ -55,6 +55,7 @@ public class GetUserProfileServlet extends HttpServlet {
             out.append(gson.toJson(new Error(e.getMessage())));
         } finally {
             out.close();
+            session.close();
         }
     }
 

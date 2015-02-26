@@ -21,6 +21,10 @@
         <!-- Dialect is required to let Hibernate know the Database Type, MySQL, Oracle etc
             Hibernate 4 automatically figure out Dialect from Database Connection Metadata -->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+
+        <property name="hibernate.connection.autocommit">true</property>
+        <property name="hibernate.connection.autoReconnect">true</property>
+
         <mapping class="domain.User"/>
         <mapping class="domain.Visit"/>
         <mapping class="domain.Waiter"/>

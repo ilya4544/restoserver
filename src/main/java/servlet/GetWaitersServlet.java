@@ -25,7 +25,7 @@ public class GetWaitersServlet extends HttpServlet {
         Gson gson = new GsonBuilder().create();
         PrintWriter out = resp.getWriter();
 
-        final Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        final Session session = HibernateUtil.getSessionFactory().openSession();
         try {
             session.beginTransaction();
             List<Waiter> waiterList = (List<Waiter>) session.createCriteria(Waiter.class).list();
@@ -42,6 +42,7 @@ public class GetWaitersServlet extends HttpServlet {
             out.append(gson.toJson(new Error(e.getMessage())));
         } finally {
             out.close();
+            session.close();
         }
     }
 

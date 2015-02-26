@@ -31,7 +31,7 @@ public class SignInServlet extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String hash = req.getParameter("hash");
-        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
         resp.setContentType("application/json");
         Gson gson = new GsonBuilder().create();
         PrintWriter out = resp.getWriter();
@@ -70,6 +70,7 @@ public class SignInServlet extends HttpServlet{
             out.append(gson.toJson(new Error(e.getMessage())));
         } finally {
             out.close();
+            session.close();
         }
     }
 }

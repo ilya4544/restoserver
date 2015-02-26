@@ -4,6 +4,7 @@ servlet\GetUserProfileServlet.class
 domain\Waiter.class
 TestObject.class
 domain\Visit.class
+servlet\GetWaiterServlet.class
 util\HibernateUtil.class
 servlet\VoteServlet.class
 domain\User.class

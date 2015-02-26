@@ -13,6 +13,10 @@
         <servlet-class>servlet.GetWaitersServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>servlet.GetWaiterServlet</servlet-name>
+        <servlet-class>servlet.GetWaiterServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>servlet.SignInServlet</servlet-name>
         <servlet-class>servlet.SignInServlet</servlet-class>
     </servlet>
@@ -36,6 +40,10 @@
     <servlet-mapping>
         <servlet-name>servlet.GetUserProfileServlet</servlet-name>
         <url-pattern>/getUserProfile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>servlet.GetWaiterServlet</servlet-name>
+        <url-pattern>/getWaiter</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>servlet.QRCodeServlet</servlet-name>

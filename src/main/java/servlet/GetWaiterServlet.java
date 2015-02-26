@@ -15,46 +15,40 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Date;
 import java.util.List;
 
-public class VoteServlet extends HttpServlet {
+/**
+ * Created by Ilya on 26.02.2015.
+ */
+public class GetWaiterServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         Gson gson = new GsonBuilder().create();
         PrintWriter out = resp.getWriter();
+        String token;
+        Long waiterId;
+
+        try {
+            token = req.getParameter("token");
+            waiterId = Long.valueOf(req.getParameter("waiterId"));
+        } catch (Exception e) {
+            out.append(gson.toJson(new Error(e.getMessage())));
+            out.close();
+            return;
+        }
+
 
         final Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            String token = req.getParameter("token");
-            Long waiterId = Long.valueOf(req.getParameter("waiterId"));
-            Integer rating = Integer.parseInt(req.getParameter("rating"));
-            String comment = req.getParameter("review");
-
             session.beginTransaction();
             List<Token> tokenList = session.createCriteria(Token.class).add(Expression.eq("token", token)).list();
             if (!tokenList.isEmpty()) {
-                Visit visit = new Visit(tokenList.get(0).getUserId(), waiterId, rating, comment, new Date());
-                session.save(visit);
                 Waiter waiter = (Waiter) session.get(Waiter.class, waiterId);
-                if (waiter.getCountRating().equals(0)) {
-                    waiter.setRating(rating);
-                } else {
-                    waiter.setRating((waiter.getRating() * waiter.getCountRating() + rating) / (waiter.getCountRating() + 1));
-                }
-
-                waiter.setCountRating(waiter.getCountRating() + 1);
-                session.update(waiter);
                 session.getTransaction().commit();
-                out.append(new String(gson.toJson(new State(true)).getBytes(), "UTF-8"));
+                out.append(gson.toJson(waiter));
             } else {
                 session.getTransaction().commit();
                 out.append(gson.toJson(new Error("access denied")));
@@ -67,5 +61,9 @@ public class VoteServlet extends HttpServlet {
             session.close();
         }
     }
-}
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPost(req, resp);
+    }
+}
