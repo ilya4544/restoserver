@@ -29,10 +29,6 @@
         <servlet-class>servlet.VoteServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>index</servlet-name>
-        <servlet-class>web.AjaxServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>servlet.QRCodeServlet</servlet-name>
         <servlet-class>servlet.QRCodeServlet</servlet-class>
     </servlet>
@@ -67,10 +63,5 @@
     <servlet-mapping>
         <servlet-name>servlet.VoteServlet</servlet-name>
         <url-pattern>/vote</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>index</servlet-name>
-        <url-pattern>/test</url-pattern>
     </servlet-mapping>
 </web-app>
