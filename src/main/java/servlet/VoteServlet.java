@@ -28,6 +28,7 @@ public class VoteServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
+        req.setCharacterEncoding("UTF-8");//wow
         resp.setCharacterEncoding("UTF-8");
         Gson gson = new GsonBuilder().create();
         PrintWriter out = resp.getWriter();
