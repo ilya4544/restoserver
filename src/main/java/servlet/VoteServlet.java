@@ -51,11 +51,10 @@ public class VoteServlet extends HttpServlet {
                 } else {
                     waiter.setRating((waiter.getRating() * waiter.getCountRating() + rating) / (waiter.getCountRating() + 1));
                 }
-
                 waiter.setCountRating(waiter.getCountRating() + 1);
                 session.update(waiter);
                 session.getTransaction().commit();
-                out.append(new String(gson.toJson(new State(true)).getBytes(), "UTF-8"));
+                out.append(gson.toJson(new State(true)));
             } else {
                 session.getTransaction().commit();
                 out.append(gson.toJson(new Error("access denied")));

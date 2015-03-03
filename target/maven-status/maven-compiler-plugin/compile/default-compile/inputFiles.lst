@@ -1,7 +1,9 @@
 C:\Users\Ilya\Documents\GitHub\restoserver\src\main\java\domain\User.java
 C:\Users\Ilya\Documents\GitHub\restoserver\src\main\java\servlet\SignUpServlet.java
+C:\Users\Ilya\Documents\GitHub\restoserver\src\main\java\servlet\UploadServlet.java
 C:\Users\Ilya\Documents\GitHub\restoserver\src\main\java\servlet\Error.java
 C:\Users\Ilya\Documents\GitHub\restoserver\src\main\java\servlet\QRCodeServlet.java
+C:\Users\Ilya\Documents\GitHub\restoserver\src\main\java\domain\Image.java
 C:\Users\Ilya\Documents\GitHub\restoserver\src\main\java\RestoServer.java
 C:\Users\Ilya\Documents\GitHub\restoserver\src\main\java\servlet\GetWaitersServlet.java
 C:\Users\Ilya\Documents\GitHub\restoserver\src\main\java\servlet\TokenKeeper.java
@@ -9,6 +11,7 @@ C:\Users\Ilya\Documents\GitHub\restoserver\src\main\java\util\SecurityUtil.java
 C:\Users\Ilya\Documents\GitHub\restoserver\src\main\java\App.java
 C:\Users\Ilya\Documents\GitHub\restoserver\src\main\java\domain\Token.java
 C:\Users\Ilya\Documents\GitHub\restoserver\src\main\java\servlet\State.java
+C:\Users\Ilya\Documents\GitHub\restoserver\src\main\java\servlet\DownloadServlet.java
 C:\Users\Ilya\Documents\GitHub\restoserver\src\main\java\servlet\VoteServlet.java
 C:\Users\Ilya\Documents\GitHub\restoserver\src\main\java\domain\Waiter.java
 C:\Users\Ilya\Documents\GitHub\restoserver\src\main\java\servlet\SignInServlet.java

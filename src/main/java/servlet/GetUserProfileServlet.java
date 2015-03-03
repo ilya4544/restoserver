@@ -13,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transaction;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
@@ -21,6 +20,7 @@ import java.util.List;
 
 public class GetUserProfileServlet extends HttpServlet {
 
+    @SuppressWarnings(value={"unchecked"})
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final Session session = HibernateUtil.getSessionFactory().openSession();
         String token = req.getParameter("token");
@@ -34,7 +34,7 @@ public class GetUserProfileServlet extends HttpServlet {
             List<Token> tokenList = session.createCriteria(Token.class).add(Expression.eq("token", token)).list();
             if (!tokenList.isEmpty()) {
                 Token tkn = (Token) session.get(Token.class, tokenList.get(0).getId());
-                Date currentDate = new Date();
+                Date currentDate = new Date(); // TODO: Replace with Calendar
                 if (!tkn.getDate().before(currentDate)) {
                     currentDate.setDate(currentDate.getDate() + 5);
                     tkn.setDate(currentDate);

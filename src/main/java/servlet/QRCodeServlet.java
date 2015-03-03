@@ -20,9 +20,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Hashtable;
 
-/**
- * Created by Администратор on 27.10.2014.
- */
 public class QRCodeServlet extends HttpServlet {
     private BufferedImage getScaledImage(BufferedImage image, int width, int height) throws IOException {
         int imageWidth  = image.getWidth();

@@ -32,5 +32,6 @@
         <mapping class="domain.Visit"/>
         <mapping class="domain.Waiter"/>
         <mapping class="domain.Token"/>
+        <mapping class="domain.Image"/>
     </session-factory>
 </hibernate-configuration>

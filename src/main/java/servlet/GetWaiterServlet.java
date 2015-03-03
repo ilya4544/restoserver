@@ -3,7 +3,6 @@ package servlet;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import domain.Token;
-import domain.Visit;
 import domain.Waiter;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
@@ -17,11 +16,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-/**
- * Created by Ilya on 26.02.2015.
- */
 public class GetWaiterServlet extends HttpServlet {
 
+    @SuppressWarnings(value={"unchecked"})
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");

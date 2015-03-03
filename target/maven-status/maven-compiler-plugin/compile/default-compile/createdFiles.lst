@@ -1,7 +1,10 @@
 RestoServer.class
+servlet\DownloadServlet.class
 App.class
 servlet\GetUserProfileServlet.class
+domain\Image.class
 domain\Waiter.class
+servlet\UploadServlet.class
 TestObject.class
 domain\Visit.class
 servlet\GetWaiterServlet.class

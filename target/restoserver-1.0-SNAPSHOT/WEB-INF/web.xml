@@ -17,6 +17,14 @@
         <servlet-class>servlet.GetWaiterServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>servlet.UploadServlet</servlet-name>
+        <servlet-class>servlet.UploadServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>servlet.DownloadServlet</servlet-name>
+        <servlet-class>servlet.DownloadServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>servlet.SignInServlet</servlet-name>
         <servlet-class>servlet.SignInServlet</servlet-class>
     </servlet>
@@ -36,6 +44,14 @@
     <servlet-mapping>
         <servlet-name>servlet.GetUserProfileServlet</servlet-name>
         <url-pattern>/getUserProfile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>servlet.DownloadServlet</servlet-name>
+        <url-pattern>/download</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>servlet.UploadServlet</servlet-name>
+        <url-pattern>/upload</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>servlet.GetWaiterServlet</servlet-name>
